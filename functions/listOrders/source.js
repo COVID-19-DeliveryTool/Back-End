@@ -1,25 +1,28 @@
-exports = function(zipcodes){
+exports = function(){
 
     /*  
-        Accepts an array of strings represting zipcodes.
-        Returns a JSON string representing an array of orders for those zipcode,
-            ordered by zipcode.
+        No input.
+        Returns a JSON string representing an array of orders for the dispatcher's zipcodes.
         
         To test this function in the Stitch UI:
             Navigate to the function.
-            At the bottom, select console and pass in an array of zipcodes to the function call.
-            Then hit run.
+            Make sure to run it as an existing dispatcher.
+            Near the bottom of the editing console, hit Run.
     */
   
     const atlas = context.services.get('mongodb-atlas');
     
-    // Check if zipcodes were passed into function.
-    if ( zipcodes instanceof Array && zipcodes.length > 0) zips = zipcodes
+    // Check if zipcodes is on the dispatcher's context.
+    if ( context.user.get("zipcodes") && 
+         context.user.get("zipcodes") instanceof Array && 
+         context.user.get("zipcodes").length > 0          ) {
+
+        zips = context.user.get("zipcodes")
+    }
     
-    // Check if zipcodes were saved in the function's context.
-    else if ( context.values.get("zipcodes") instanceof Array && context.values.get("zipcodes").length > 0 ) zips = zipcodes
-    
-    else throw "Zipcodes need to be provided. It should be an array in strings."
+    // Throw an error if a dipatcher's zipcodes are empty
+    else throw "Attribute 'zipcodes' not found for the dispatcher running the function. It should be an array in strings."
+
     console.log("Zips: ", zips)
     
     // Set up query to only return orders in the zips array.

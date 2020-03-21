@@ -13,22 +13,20 @@ exports = function(zipcodes){
   
     const atlas = context.services.get('mongodb-atlas');
     
-    // Set placeholder.
-    let zips = ["1234", "2345", "3456"]
-    
     // Check if zipcodes were passed into function.
     if ( zipcodes instanceof Array && zipcodes.length > 0) zips = zipcodes
     
     // Check if zipcodes were saved in the function's context.
     else if ( context.values.get("zipcodes") instanceof Array && context.values.get("zipcodes").length > 0 ) zips = zipcodes
-                  
+    
+    else throw "Zipcodes need to be provided. It should be an array in strings."
     console.log("Zips: ", zips)
     
     // Set up query to only return orders in the zips array.
     const query = { zipcode: { $in: zips }  };
     
     // Query and returns orders in array.
-    return atlas.db('stayneighbor-dev').collection('orders').find(query) 
+    return atlas.db('stayneighbor').collection('orders').find(query) 
       .sort({ zipcode: 1 })
       .toArray()
       .then(items => {

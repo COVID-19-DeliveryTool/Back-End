@@ -1,4 +1,15 @@
 exports = function(zipcodes){
+
+    /*  
+        Accepts an array of strings represting zipcodes.
+        Returns a JSON string representing an array of orders for those zipcode,
+            ordered by zipcode.
+        
+        To test this function in the Stitch UI:
+            Navigate to the function.
+            At the bottom, select console and pass in an array of zipcodes to the function call.
+            Then hit run.
+    */
   
     const atlas = context.services.get('mongodb-atlas');
     

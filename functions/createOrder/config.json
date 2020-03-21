@@ -1,5 +1,9 @@
 {
     "name": "createOrder",
     "private": false,
-    "run_as_system": true
+    "can_evaluate": true,
+    "disable_arg_logs": false,
+    "run_as_system": true,
+    "run_as_user_id": "<Stitch User ID>"
+
 }

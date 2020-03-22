@@ -18,6 +18,6 @@ exports = function(orderId, driverId){
     //maybe here we want to send an email?
      return {"status": '200', 'message':"Successfully updated item. Database returned " + JSON.stringify(result)};
     }).catch(err => {
-      return {"status": '400', 'message':"Failed to insert item:" + err}
+      return {"status": '400', 'message':"Failed to update order:" + err}
     })
 }

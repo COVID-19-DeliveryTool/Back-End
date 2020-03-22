@@ -13,11 +13,11 @@ exports = function(){
     const atlas = context.services.get('mongodb-atlas');
     
     // Check if zipcodes is on the dispatcher's context.
-    if ( context.user.get("zipcodes") && 
-         context.user.get("zipcodes") instanceof Array && 
-         context.user.get("zipcodes").length > 0          ) {
+    if ( context.user.custom_data.get("zipcodes") && 
+         context.user.custom_data.get("zipcodes") instanceof Array && 
+         context.user.custom_data.get("zipcodes").length > 0          ) {
 
-        zips = context.user.get("zipcodes")
+        zips = context.user.custom_data.get("zipcodes")
     }
     
     // Throw an error if a dipatcher's zipcodes are empty

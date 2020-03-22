@@ -1,9 +1,5 @@
 {
     "name": "createOrganization",
     "private": false,
-    "can_evaluate": true,
-    "disable_arg_logs": false,
-    "run_as_system": true,
-    "run_as_user_id": "<Stitch User ID>"
-
+    "run_as_system": true
 }

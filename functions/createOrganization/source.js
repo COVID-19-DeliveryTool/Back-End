@@ -31,33 +31,27 @@
  * 
  * 
  */
-
 exports = function (organzation) {
 
     let db = context.services.get("mongodb-atlas").db("stayneighbor-dev");
-    let collection = db.collection("orders");
-    let uuid = require('uuid');
+    let collection = db.collection("organizations");
 
     //Sanity null check
     if(!organzation) {
-        return { "status": '400', 'message': "Bad request, input payload is null." };
+      return { "status": '400', 'message': "Bad request, input payload is null." };
     }
 
     //TODO: possible validation, better in schema validator?
-    if(organzation.name == undefined || organzation.name.length == 0) {
+    if (organzation.name == undefined || organzation.name.length == 0) {
         return { "status": '400', 'message': "Name is required!" };
     }
 
     // Manually generate a UUID for each dispatcher
-    if(organzation.dispatchers != undefined && organzation.length >0 ) {
-        organzation.dispatchers.map(
-            d => d.id = uuid.uuid4()
-        );
+    if (organzation.dispatchers !== undefined && organzation.dispatchers.length > 0) {
+        organzation.dispatchers.forEach(dispatch => dispatch.id = guid());
     }
 
     organzation.dateCreated = new Date(Date.now());
-
-    console.log(EJSON.parse(organzation));
 
     return collection.insertOne(organzation)
         .then(result => {
@@ -66,4 +60,11 @@ exports = function (organzation) {
             return { "status": '400', 'message': "Failed to insert item:" + err };
         });
 
+}
+
+function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }

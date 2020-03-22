@@ -1,5 +1,5 @@
 {
-    "database": "stayneighbor-dev",
+    "database": "stayneighbor",
     "collection": "organizations",
     "roles": [
         {

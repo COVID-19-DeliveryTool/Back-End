@@ -1,6 +1,6 @@
 {
-    "database": "stayneighbor-dev",
-    "collection": "organizations",
+    "database": "stayneighbor",
+    "collection": "orders",
     "roles": [
         {
             "name": "default",

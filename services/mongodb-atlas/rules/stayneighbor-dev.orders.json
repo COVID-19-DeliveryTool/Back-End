@@ -3,11 +3,8 @@
     "collection": "orders",
     "roles": [
         {
-            "name": "owner",
-            "apply_when": {
-                "owner_id": "%%user.id"
-            },
-            "read": true,
+            "name": "default",
+            "apply_when": {},
             "write": true,
             "insert": true,
             "delete": true,

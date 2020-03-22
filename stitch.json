@@ -6,10 +6,5 @@
     },
     "sync": {
         "development_mode_enabled": false
-    },
-    "hosting": {
-        "enabled": true,
-        "default_response_code": 200,
-        "default_error_path": "/index.html"
-      }
+    }
 }

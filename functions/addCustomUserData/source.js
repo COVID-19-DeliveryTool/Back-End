@@ -22,7 +22,7 @@ exports = async function (arg) {
         return (
             {
                 "status": "500",
-                "message": "Cannot add custom user data when user is empty. Make sure function is invoked by user"
+                "message": "Cannot add custom user data when user is empty. Make sure function is invoked by trigger"
             }
         );
     }

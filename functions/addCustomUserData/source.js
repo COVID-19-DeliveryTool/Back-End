@@ -1,6 +1,14 @@
 /**
- * Doesn't expect any args. To Test run as a specific user.
+ * Should only be run from a trigger (args format matches trigger args)
  */
+
+ /**
+  * For testsing:
+let tUser = { "data": { "email": "kylewilson52@gmail.com", "first_name": "Kyle", "last_name": "Wilson", "name": "Kyle Wilson" }, "id": "5e76c9c1b2f08c1062907727" };
+let input = {};
+input.user = tUser;
+exports(input);
+*/
 
 exports = async function (arg) {
     let db = context.services.get("mongodb-atlas").db("stayneighbor");
@@ -8,9 +16,8 @@ exports = async function (arg) {
     let organizationsCollection = db.collection("organizations");
 
     console.log("User to add Custom Data:\n" + JSON.stringify(context.user));
-    //Make sure the function is executed in the context of a user
-    //if it's not context.user will be empty
-    let user = context.user;
+    //Can only be executed by trigger when arg.user has user object
+    let user = arg.user;
     if (!user || !user.data || !user.data.email) {
         return (
             {

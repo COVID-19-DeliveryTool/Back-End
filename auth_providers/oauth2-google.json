@@ -1,0 +1,34 @@
+{
+    "name": "oauth2-google",
+    "type": "oauth2-google",
+    "config": {
+        "clientId": "653015965076-bnbqib0g3555nfmghhtc2ta352meadg0.apps.googleusercontent.com"
+    },
+    "secret_config": {
+        "clientSecret": "stayneighor-oauth-secret"
+    },
+    "disabled": false,
+    "redirect_uris": [
+        "http://localhost:3000/dispatcher",
+        "https://stayneighbor-dev-nszik-umqmf.mongodbstitch.com/dispatcher",
+        "https://stayneighbor-bjuma.mongodbstitch.com/dispatcher"
+    ],
+    "metadata_fields": [
+        {
+            "required": false,
+            "name": "name"
+        },
+        {
+            "required": false,
+            "name": "first_name"
+        },
+        {
+            "required": false,
+            "name": "last_name"
+        },
+        {
+            "required": false,
+            "name": "email"
+        }
+    ]
+}

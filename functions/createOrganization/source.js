@@ -32,13 +32,6 @@
  * 
  */
 
- /*
-// how to test on the stitch ui:
-// once you have gone to the function ahad_test, click "console" and paste the commented out code below. Then, copy and paste the real function in the function editor and click run.
-
-exports(obj)
-*/
-
 /**  
 let testOrg = {
     "name": "TestOrg",

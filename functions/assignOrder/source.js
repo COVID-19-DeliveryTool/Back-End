@@ -12,7 +12,7 @@ exports = function(orderId, driverId){
   let db = context.services.get("mongodb-atlas").db("stayneighbor")
   let collection = db.collection("orders")
   let query = {_id: BSON.ObjectId(orderId)}
-  let updateCmd = {$set: {assignedToDriver: driverId}}
+  let updateCmd = {$set: {assignedToDriver: driverId, assignedToOrg: context.user.custom_data.organizationId}}
   return collection.updateOne(query, updateCmd)
   .then(result => {
     //maybe here we want to send an email?

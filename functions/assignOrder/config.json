@@ -1,5 +1,5 @@
 {
     "name": "assignOrder",
     "private": false,
-    "run_as_system": true
+    "run_as_system": false
 }

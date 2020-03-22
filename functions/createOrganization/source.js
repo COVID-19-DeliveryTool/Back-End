@@ -31,9 +31,46 @@
  * 
  * 
  */
+
+ /*
+// how to test on the stitch ui:
+// once you have gone to the function ahad_test, click "console" and paste the commented out code below. Then, copy and paste the real function in the function editor and click run.
+
+exports(obj)
+*/
+
+/**  
+let testOrg = {
+    "name": "TestOrg",
+    "contactName": "Test Org Leader",
+    "contactPhone": "6666666666",
+    "state": "VA",
+    "city": "Arlington",
+    "dispatchers": [
+        {
+            "name": "d1",
+            "email": "d1@mail.com",
+            "phone": "1234567890"
+        }
+    ],
+    "drivers": [
+        {
+            "name": "driver1",
+            "email": "drvier1@mail.com",
+            "phone": "12341234"
+        }
+    ],
+    "zipcodes": [
+        "22202",
+        "22201"
+    ]
+}
+
+exports(testOrg);
+*/
 exports = function (organzation) {
 
-    let db = context.services.get("mongodb-atlas").db("stayneighbor-dev");
+    let db = context.services.get("mongodb-atlas").db("stayneighbor");
     let collection = db.collection("organizations");
 
     //Sanity null check
@@ -49,6 +86,11 @@ exports = function (organzation) {
     // Manually generate a UUID for each dispatcher
     if (organzation.dispatchers !== undefined && organzation.dispatchers.length > 0) {
         organzation.dispatchers.forEach(dispatch => dispatch.id = guid());
+    }
+
+    // Manually generate a UUID for each dispatcher
+    if (organzation.drivers !== undefined && organzation.drivers.length > 0) {
+        organzation.drivers.forEach(driver => driver.id = guid());
     }
 
     organzation.dateCreated = new Date(Date.now());

@@ -24,13 +24,13 @@ orderDetails looks like this:
 var text = '{ "firstName":"name",'  +
           '"lastName":"lastName",'  +
           '"householdNum":"1",'  +
-          '"address":"addr4",'  +
+          '"address":"",'  +
           '"phoneNumber":"1234567890",'  +
-          '"requestedItems": [{"name":"eggs", "quantity": "1"}],'  +
+          '"items": [{"name":"eggs", "quantity": "1"}],'  +
           '"zipcode":"1234",'  +
           '"type":"REQUEST",'  +
           '"additionalInfo":"none",'  +
-          '"dropoffTime":"2"}'
+          '"time":"2"}'
 var obj = JSON.parse(text);
 exports(obj)
 */
@@ -47,21 +47,22 @@ exports = function(orderDetails){
      return  ({"status": "400", "message": "Order has already been placed from this address within 24 hours."});
     }
 
-  orderDetails.dateCreated = new Date(Date.now())
-  //call function to convert address to lat/long. Pass in lat/long to the below lines
-  let geometry = {}
-  geometry.lat = "123"
-  geometry.long = "123"
-  orderDetails.geometry = geometry
-  orderDetails.status = "PENDING"
-  orderDetails.assignedToDriver = ""
-  orderDetails.assignedToOrg = ""
-  return collection.insertOne(orderDetails)
-   .then(result => {
-     return {"status": '200', 'message':"Successfully inserted item with _id:" + result.insertedId};
-    }).catch(err => {
-      return {"status": '400', 'message':"Failed to insert item:" + err}
-    });
+    return val =   context.functions.execute("getCoords", orderDetails.address).then(coords => {
+      let geometry = {}
+      geometry.lat = coords.lat
+      geometry.long = coords.lng
+      orderDetails.geometry = geometry
+      orderDetails.dateCreated = new Date(Date.now())
+      orderDetails.status = "PENDING"
+      orderDetails.assignedToDriver = ""
+      orderDetails.assignedToOrg = ""
+      return collection.insertOne(orderDetails)
+       .then(result => {
+         return {"status": '200', 'message':"Successfully inserted item with _id:" + result.insertedId};
+        }).catch(err => {
+          return {"status": '400', 'message':"Failed to insert item:" + err}
+        });
+      })
   })
 
 }

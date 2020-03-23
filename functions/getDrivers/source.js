@@ -6,7 +6,7 @@ An example return value is [{"name":"driver1","email":"drvier1@mail.com","phone"
 
 exports = function(){
 
-  let db = context.services.get("mongodb-atlas").db("stayneighbor")
+  let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
   let collection = db.collection("organizations")
   let query = {_id: BSON.ObjectId(String(context.user.custom_data.organizationId))}
   return collection.findOne(query)

@@ -1,5 +1,5 @@
 {
-    "database": "stayneighbor",
+    "database": "%%values.db-name",
     "collection": "user_data",
     "roles": [
         {

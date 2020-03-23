@@ -1,0 +1,5 @@
+{
+    "name": "cluster-name",
+    "value": "mongodb-atlas",
+    "from_secret": false
+}

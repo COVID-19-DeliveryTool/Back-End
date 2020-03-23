@@ -54,7 +54,8 @@ exports = function(orderDetails){
       orderDetails.geometry = geometry
       orderDetails.dateCreated = new Date(Date.now())
       orderDetails.status = "PENDING"
-      orderDetails.assignedToDriver = ""
+      let driverObj = {name: "",email: "",phone: "","id": ""}
+      orderDetails.driver = driverObj
       orderDetails.assignedToOrg = ""
       orderDetails.driverEmail = ""
       return collection.insertOne(orderDetails)

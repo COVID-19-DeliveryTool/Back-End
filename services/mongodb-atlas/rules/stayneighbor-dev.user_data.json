@@ -1,5 +1,5 @@
 {
-    "database": "stayneighbor",
+    "database": "stayneighbor-dev",
     "collection": "user_data",
     "roles": [
         {

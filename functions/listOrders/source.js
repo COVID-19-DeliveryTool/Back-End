@@ -9,8 +9,8 @@ exports = function(){
             Make sure to run it as an existing dispatcher.
             Near the bottom of the editing console, hit Run.
     */
-  
-    const atlas = context.services.get('mongodb-atlas');
+
+    const atlas = context.services.get(context.values.get("cluster-name"));
     
     // Check if zipcodes is on the dispatcher's context.
     if ( context.user.custom_data.zipcodes && 
@@ -29,7 +29,7 @@ exports = function(){
     const query = { zipcode: { $in: zips }  };
     
     // Query and returns orders in array.
-    return atlas.db('stayneighbor').collection('orders').find(query) 
+    return atlas.db(context.values.get("db-name")).collection('orders').find(query) 
       .sort({ zipcode: 1 })
       .toArray()
       .then(items => {

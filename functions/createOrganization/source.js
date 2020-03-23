@@ -63,7 +63,7 @@ exports(testOrg);
 */
 exports = function (organzation) {
 
-    let db = context.services.get("mongodb-atlas").db("stayneighbor");
+    let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
     let collection = db.collection("organizations");
 
     //Sanity null check

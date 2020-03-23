@@ -9,7 +9,7 @@ exports('5e76aad15f06170a32d8f8b5', '2')
 
 exports = function(orderId, driverId){
 
-  let db = context.services.get("mongodb-atlas").db("stayneighbor")
+  let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
   let collection = db.collection("orders")
   let query = {_id: BSON.ObjectId(orderId)}
   let updateCmd = {$set: {assignedToDriver: driverId, assignedToOrg: context.user.custom_data.organizationId}}

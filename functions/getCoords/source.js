@@ -36,8 +36,10 @@ results[]: {
 */
 
 exports = async function(address){
+
+  let mapsApiKey = context.values.get("stayneighor-google-maps-api-key");
   //This function assumes that the Google API has already been hooked up.
-  let response = await context.http.get({url : 'https://maps.googleapis.com/maps/api/geocode/json?address="'+encodeURI(address)+'"&key=API_KEY'});
+  let response = await context.http.get({url : 'https://maps.googleapis.com/maps/api/geocode/json?address="'+encodeURI(address)+'"&key='+mapsApiKey});
   console.log(JSON.stringify(response.status));
 
   let responseJson; 
@@ -45,7 +47,6 @@ exports = async function(address){
   if(response.status.indexOf('200') > -1){
     //action was successful
     responsJson = EJSON.parse(response.body.text());
-    //console.log(JSON.stringify(responseJson));
   }
 
   if(response.status.indexOf('400') > -1){
@@ -55,6 +56,5 @@ exports = async function(address){
   
   let coords = responseJson.results[0].geometry.location;
 
-  //console.log(JSON.stringify(coords));
   return coords;
 }

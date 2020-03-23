@@ -47,7 +47,7 @@ exports = function(orderDetails){
      return  ({"status": "400", "message": "Order has already been placed from this address within 24 hours."});
     }
 
-    return val =   context.functions.execute("getCoords", orderDetails.address).then(coords => {
+    return val = context.functions.execute("getCoords", orderDetails.address).then(coords => {
       let geometry = {}
       geometry.lat = coords.lat
       geometry.long = coords.lng

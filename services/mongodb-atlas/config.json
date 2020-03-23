@@ -2,6 +2,7 @@
     "name": "mongodb-atlas",
     "type": "mongodb-atlas",
     "config": {
+        "clustername": "stayneighbor1",
         "readPreference": "primary",
         "wireProtocolEnabled": false
     },

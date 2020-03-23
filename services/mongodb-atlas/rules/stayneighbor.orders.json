@@ -1,5 +1,5 @@
 {
-    "database": "%%values.db-name",
+    "database": "stayneighbor",
     "collection": "orders",
     "roles": [
         {

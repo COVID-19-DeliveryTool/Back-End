@@ -56,7 +56,9 @@ exports = function(orderDetails){
       orderDetails.status = "PENDING"
       let driverObj = {name: "",email: "",phone: "","id": ""}
       orderDetails.driver = driverObj
+      orderDetails.assignedToDriver = ""
       orderDetails.assignedToOrg = ""
+      orderDetails.driverEmail = ""
       return collection.insertOne(orderDetails)
        .then(result => {
          return {"status": '200', 'message':"Successfully inserted item with _id:" + result.insertedId};

@@ -32,10 +32,10 @@
  * 
  */
 
-/**  
+/** 
 let testOrg = {
-    "name": "TestOrg",
-    "contactName": "Test Org Leader",
+    "name": "Acme",
+    "contactName": "Acme Leader",
     "contactPhone": "6666666666",
     "state": "VA",
     "city": "Arlington",
@@ -44,6 +44,31 @@ let testOrg = {
             "name": "d1",
             "email": "d1@mail.com",
             "phone": "1234567890"
+        },
+        {
+            "name": "Kyle Wilson",
+            "email": "kylewilson52@gmail.com",
+            "phone": "2105081866"
+        },
+        {
+            "name": "Ian Green",
+            "email": "1an6reen@gmail.com",
+            "phone": "123412311"
+        },
+        {
+            "name": "Ahad",
+            "email": "ahad78584@gmail.com",
+            "phone": "123412311"
+        },
+        {
+            "name": "Dillion",
+            "email": "dillonharless@gmail.com",
+            "phone": "123412311"
+        },
+        {
+            "name": "Patrick",
+            "email": "patrick.willets@gmail.com",
+            "phone": "123412311"
         }
     ],
     "drivers": [
@@ -55,12 +80,15 @@ let testOrg = {
     ],
     "zipcodes": [
         "22202",
-        "22201"
+        "22201",
+        "28402",
+        "28405",
+        "28401"
     ]
 }
 
 exports(testOrg);
-*/
+**/
 exports = function (organzation) {
 
     let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));

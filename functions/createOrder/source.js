@@ -23,13 +23,13 @@ orderDetails looks like this:
 // once you have gone to the function ahad_test, click "console" and paste the commented out code below. Then, copy and paste the real function in the function editor and click run.
 var text = '{ "firstName":"name",'  +
           '"lastName":"lastName",'  +
-          '"householdNum":"1",'  +
-          '"address":"",'  +
+          '"householdNum": "1",'  +
+          '"address":"f st",'  +
           '"phoneNumber":"1234567890",'  +
           '"items": [{"name":"eggs", "quantity": "1"}],'  +
           '"zipcode":"1234",'  +
           '"type":"REQUEST",'  +
-          '"additionalInfo":"none",'  +
+          '"additionalInfo":"1",'  +
           '"time":"2"}'
 var obj = JSON.parse(text);
 exports(obj)
@@ -42,7 +42,6 @@ exports = function(orderDetails){
   let query = {dateCreated:{$gt:new Date(Date.now() - 24*60*60 * 1000)}, address: orderDetails.address}
   return collection.find(query).toArray()
   .then(arr => {
-    console.log(arr.length )
     if (arr.length !== 0){
      return  ({"status": "400", "message": "Order has already been placed from this address within 24 hours."});
     }

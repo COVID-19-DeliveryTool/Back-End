@@ -37,7 +37,7 @@ exports(obj)
 
 exports = function(orderDetails){
 
-  let db = context.services.get("mongodb-atlas").db("stayneighbor")
+  let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
   let collection = db.collection("orders")
   let query = {dateCreated:{$gt:new Date(Date.now() - 3*60*60 * 1000)}, address: orderDetails.address}
   return collection.find(query).toArray()

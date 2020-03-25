@@ -1,0 +1,17 @@
+{
+    "name": "newOrderNotifyTrigger",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT"
+        ],
+        "database": "stayneighbor",
+        "collection": "orders",
+        "service_name": "",
+        "match": {},
+        "full_document": true,
+        "unordered": false
+    },
+    "function_name": "sendRequestReceivedNotification",
+    "disabled": false
+}

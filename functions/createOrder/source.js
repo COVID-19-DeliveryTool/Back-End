@@ -39,13 +39,12 @@ exports = function(orderDetails){
 
   let db = context.services.get("mongodb-atlas").db("stayneighbor")
   let collection = db.collection("orders")
-  let query = {dateCreated:{$gt:new Date(Date.now() - 24*60*60 * 1000)}, address: orderDetails.address}
+  let query = {dateCreated:{$gt:new Date(Date.now() - 3*60*60 * 1000)}, address: orderDetails.address}
   return collection.find(query).toArray()
   .then(arr => {
-    if (arr.length !== 0){
-     return  ({"status": "400", "message": "Order has already been placed from this address within 24 hours."});
+    if (arr.length !== 0 && orderDetails.type == 'REQUEST'){
+     return  ({"status": "400", "message": "Order has already been placed from this address within 3 hours."});
     }
-
     return val = context.functions.execute("getCoords", orderDetails.address).then(coords => {
       let geometry = {}
       geometry.lat = coords.lat
@@ -53,11 +52,8 @@ exports = function(orderDetails){
       orderDetails.geometry = geometry
       orderDetails.dateCreated = new Date(Date.now())
       orderDetails.status = "PENDING"
-      let driverObj = {name: "", email: "",phone: "", id": ""}
-      orderDetails.driver = driverObj
       orderDetails.assignedToDriver = ""
       orderDetails.assignedToOrg = ""
-      orderDetails.driverEmail = ""
       return collection.insertOne(orderDetails)
        .then(result => {
          return {"status": '200', 'message':"Successfully inserted item with _id:" + result.insertedId};

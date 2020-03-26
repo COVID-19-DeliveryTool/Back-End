@@ -46,6 +46,9 @@ exports = function(orderDetails){
      return  ({"status": "400", "message": "Order has already been placed from this address within 3 hours."});
     }
     return val = context.functions.execute("getCoords", orderDetails.address).then(coords => {
+      if (coords.status == 400){
+        return {"status": '400', 'message':"Address <" + orderDetails.address + "> does not exist"}
+      }
       let geometry = {}
       geometry.lat = coords.lat
       geometry.long = coords.lng
@@ -54,7 +57,8 @@ exports = function(orderDetails){
       orderDetails.status = "PENDING"
       orderDetails.assignedToDriver = ""
       orderDetails.assignedToOrg = ""
-      return collection.insertOne(orderDetails)
+      orderDetails.driverEmail= ""
+     return collection.insertOne(orderDetails)
        .then(result => {
          return {"status": '200', 'message':"Successfully inserted item with _id:" + result.insertedId};
         }).catch(err => {

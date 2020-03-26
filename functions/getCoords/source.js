@@ -1,5 +1,5 @@
 /*
-Function takes in an address in the form of a string and returns the LatLng 
+Function takes in an address in the form of a string and returns the LatLng
 Coords. If the address is not found it will return a single number 404.
 
 Geocode Request literal:
@@ -11,7 +11,7 @@ Requires at least a address, location, or placeID.
     bounds: LatLngBounds,
     componentRestrictions: GeocoderComponentRestrictions,
     region: strinG
-} 
+}
 
 Results Return:
 results[]: {
@@ -44,7 +44,7 @@ exports = async function(address){
   });
   console.log(JSON.stringify(response.status));
 
-  let responseJson; 
+  let responseJson;
 
   if(response.status.indexOf('200') > -1){
     //action was successful
@@ -55,7 +55,9 @@ exports = async function(address){
     //action was not successful
     return { error: EJSON.parse(response.body.text()) }
   }
-  
+  if (responseJson.results.length === 0){
+    return {"status": '400', 'message':"Address <" + address + "> does not exist"}
+  }
   let coords = responseJson.results[0].geometry.location;
 
   return coords;

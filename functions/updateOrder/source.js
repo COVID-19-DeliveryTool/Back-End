@@ -82,9 +82,7 @@ exports = async function(uOrder, addressChanged){
       let return_messsage = ""
       let return_status = "200"
       
-      // return atlas.db(context.values.get("db-name")).collection('orders').updateOne(query, updateCmd, options) 
-      let res = await atlas.db("stayneighbor-dev").collection('orders').updateOne(query, updateCmd, options) 
-          // .then( res => {
+      let res = await atlas.db(context.values.get("db-name")).collection('orders').updateOne(query, updateCmd, options) 
       console.log("Update operation condluded with: ", JSON.stringify(res))
       // Couldn't find the document
       if ( res.matchedCount === 0) {

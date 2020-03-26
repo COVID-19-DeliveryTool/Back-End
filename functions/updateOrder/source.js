@@ -11,7 +11,7 @@ exports = async function(uOrder, addressChanged){
     */
     try {
       // Connect to atlas
-      const atlas = context.services.get('mongodb-atlas');
+      const atlas = context.services.get(context.values.get("cluster-name"));
     
       let updatedOrder
       // Parse JSON ? Not sure if necessary.

@@ -13,7 +13,7 @@ exports = async function (changeEvent) {
     // Destructure out fields from the change stream event object
     const { fullDocument, operationType } = changeEvent;
     
-    console.log("fullDocument: ", fullDocument)
+    console.log("fullDocument: ", JSON.stringify(fullDocument))
     
     // Instantiate message
     let message_obj = {
@@ -35,7 +35,7 @@ exports = async function (changeEvent) {
     
     // Updates the message object appropriately
     function updateMessageObj(message_obj, email, subject, body) {
-      console.log("message_object: ", message_obj)
+      console.log("message_object: ", JSON.stringify(message_obj))
       console.log("email: ", email)
       let mo = message_obj;
       mo.Destination = { ToAddresses: [email] };
@@ -48,10 +48,10 @@ exports = async function (changeEvent) {
         // A new order was created
         if ( operationType === "insert" && changeEvent.ns.coll === "orders" ) {
           // Build requester message
-          let { firstName, lastName, requesterEmail } = fullDocument;
+          let { firstName, lastName, emailAddress } = fullDocument;
           let subject = 'We got your request! - StayNeighbor';
           let body = `Hey, ${firstName} ${lastName},\n\n StayNeighbor has received your order and it is being processed.`;
-          message_obj = updateMessageObj(message_obj, requesterEmail, subject, body);
+          message_obj = updateMessageObj(message_obj, emailAddress, subject, body);
       
           // Send message
           let result = await ses.SendEmail(message_obj);

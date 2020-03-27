@@ -1,0 +1,5 @@
+{
+    "name": "stayneighbor-ses-aws-key",
+    "value": "stayneighbor-ses-aws-key",
+    "from_secret": true
+}

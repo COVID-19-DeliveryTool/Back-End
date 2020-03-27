@@ -1,0 +1,11 @@
+{
+    "name": "AWS_SES",
+    "type": "aws",
+    "config": {
+        "accessKeyId": "AKIA4VCYUZD6DXS62VUL"
+    },
+    "secret_config": {
+        "secretAccessKey": "stayneighbor-ses-aws-key"
+    },
+    "version": 1
+}

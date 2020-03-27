@@ -21,7 +21,7 @@ exports = function(){
     }
 
     // Throw an error if a dipatcher's zipcodes are empty
-    else throw "Attribute 'zipcodes' not found for the dispatcher running the function. It should be an array in strings."
+    else throw "Attribute 'zipcodes' not found for the dispatcher running the function. It should be an array of strings."
 
     console.log("Zips: ", zips)
 

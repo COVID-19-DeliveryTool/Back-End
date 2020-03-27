@@ -51,7 +51,7 @@ exports = async function (arg) {
     //Perform an upsert to replace existing custom user data or add a new one
     return userDataCollection.updateOne({user_id: user.id}, userData, {upsert: true})
         .then(result => {
-            return { "status": '200', 'message': "Successfully inserted item with _id:" + result.insertedId };
+            return { "status": '200', 'message': "Successfully inserted item:" + JSON.stringify(result) };
         }).catch(err => {
             return { "status": '400', 'message': "Failed to insert item:" + err }
         });

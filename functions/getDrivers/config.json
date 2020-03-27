@@ -1,5 +1,4 @@
 {
     "name": "getDrivers",
-    "private": false,
-    "run_as_system": false
+    "private": false
 }

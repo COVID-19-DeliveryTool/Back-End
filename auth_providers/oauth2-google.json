@@ -8,11 +8,6 @@
         "clientSecret": "stayneighor-oauth-secret"
     },
     "disabled": false,
-    "redirect_uris": [
-        "http://localhost:3000/dispatcher",
-        "https://stayneighbor-dev-nszik-umqmf.mongodbstitch.com/dispatcher",
-        "https://stayneighbor-bjuma.mongodbstitch.com/dispatcher"
-    ],
     "metadata_fields": [
         {
             "required": false,
@@ -30,5 +25,10 @@
             "required": false,
             "name": "email"
         }
+    ],
+    "redirect_uris": [
+        "http://localhost:3000/dispatcher",
+        "https://stayneighbor-dev-nszik-umqmf.mongodbstitch.com/dispatcher",
+        "https://stayneighbor-bjuma.mongodbstitch.com/dispatcher"
     ]
 }

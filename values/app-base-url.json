@@ -1,0 +1,5 @@
+{
+    "name": "app-base-url",
+    "value": "https://stayneighbor-bjuma.mongodbstitch.com",
+    "from_secret": false
+}

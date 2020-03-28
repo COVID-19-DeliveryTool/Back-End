@@ -3,7 +3,7 @@ exports = async function (changeEvent) {
     /*
         Accepts: changeEvent
   
-        Invoked by a trigger that watches for the "emailAddres" field to change
+        Invoked by a trigger that watches for the "emailAddress" field to change
         
         Sends an email to the email address stored in emailAddres on the updated document.
         
@@ -54,7 +54,7 @@ exports = async function (changeEvent) {
                 "lat": "123",
                 "long": "123"
             },
-            "status": "IN PROGRESS",
+            "status": "COMPLETED",
             "assignedToDriver": "dillonharless@gmail.com",
             "assignedToOrg": "",
             "assignedToDriver": "dillonharless@gmail.com",
@@ -62,6 +62,15 @@ exports = async function (changeEvent) {
           }
         }
     */
+
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
   
     const ses = context.services.get('AWS_SES').ses("us-east-1");
   
@@ -105,19 +114,28 @@ exports = async function (changeEvent) {
         // A driver was assigned and the status updated to IN PROGRESS
         if ( operationType === "update" && 
              changeEvent.ns.coll === "orders" && 
-             fullDocument.status === "IN PROGRESS" &&
+             fullDocument.status === "COMPLETED" &&
              fullDocument.assignedToDriver &&
              fullDocument.emailAddress ) {
           
                 // TODO: Call a function to create a completion url.
                 // Build requester message
                 let { emailAddress, address, zipcode, items, firstName, lastName } = fullDocument;
-                let subject = "Your request is on the way! - StayNeighbor";
-                let body = `Hey ${JSON.stringify(firstName)}, \n\n your order is currently being delivered by one of our drivers!\n\n
+
+                let itemList = "<ul>";
+                items.forEach(element => {
+                    itemList += `<li>${toTitleCase(element.name)}</li>`;
+                });
+                itemList += "</ul>";
+
+                let subject = "Your request has been fulfilled! - StayNeighbor";
+                let body = `Hey ${firstName},<br><br> Your order has been delivered!<br><br>
                               
-                            Items requested: ${items}.\n
-                            Delivery Address: ${address}, ${zipcode}.\n
-                            \n
+                            Items requested:<br> 
+                            ${itemList}<br>
+                            Delivery Address: ${address}, ${zipcode}.<br><br>
+
+                            Please don't hesitate to use us again.<br><br>
                             Thanks for using StayNeighbor. Please tell everyone you know about us!`;
                 message_obj = updateMessageObj(message_obj, emailAddress, subject, body);
                 

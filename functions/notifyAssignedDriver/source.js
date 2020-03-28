@@ -58,7 +58,7 @@ exports = async function (changeEvent) {
           "assignedToDriver": "dillonharless@gmail.com",
           "assignedToOrg": "",
           "assignedToDriver": "dillonharless@gmail.com",
-          "requesterEmail": "dillonharless@gmail.com"
+          "emailAddress": "dillonharless@gmail.com"
         }
       }
   */
@@ -98,12 +98,6 @@ exports = async function (changeEvent) {
     mo.Message.Body.Html.Data = body;
     return mo;
   }
-  
-  console.log("Before the try.")
-  console.log(JSON.stringify(operationType))
-  console.log(JSON.stringify(changeEvent.ns.coll))
-  console.log(JSON.stringify(fullDocument.status))
-  console.log(JSON.stringify(fullDocument.assignedToDriver))
 
   try { 
       // A driver was assigned and the status updated to IN_PROGRESS
@@ -137,7 +131,7 @@ exports = async function (changeEvent) {
   }
   catch(err){
     console.log("ERROR: ", err)
-    return {"status":"403","message":`Emai sent to ${assignedToDriver} successfully.`}
+    return {"status":"403","message":`Failed to send email to ${assignedToDriver}.`,"data":`${JSON.stringify(err)}`}
   }
   
 };	

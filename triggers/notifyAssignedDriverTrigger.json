@@ -8,7 +8,7 @@
         "database": "stayneighbor",
         "collection": "orders",
         "service_name": "mongodb-atlas",
-        "match": {"status":"IN_PROGRESS"},
+        "match": {"status":"IN PROGRESS"},
         "full_document": true,
         "unordered": false
     },

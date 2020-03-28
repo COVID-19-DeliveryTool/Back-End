@@ -23,7 +23,7 @@ exports = async function (changeEvent) {
          updateDescription: {
             updatedFields: {
                assignedToDriver: 'dilloharless@gmail.com',
-               status:"IN_PROGRESS",
+               status:"IN PROGRESS",
                assignedToDriver:"2"
             },
             removedFields: null
@@ -54,11 +54,11 @@ exports = async function (changeEvent) {
               "lat": "123",
               "long": "123"
           },
-          "status": "IN_PROGRESS",
+          "status": "IN PROGRESS",
           "assignedToDriver": "dillonharless@gmail.com",
           "assignedToOrg": "",
           "assignedToDriver": "dillonharless@gmail.com",
-          "requesterEmail": "dillonharless@gmail.com"
+          "emailAddress": "dillonharless@gmail.com"
         }
       }
   */
@@ -98,18 +98,12 @@ exports = async function (changeEvent) {
     mo.Message.Body.Html.Data = body;
     return mo;
   }
-  
-  console.log("Before the try.")
-  console.log(JSON.stringify(operationType))
-  console.log(JSON.stringify(changeEvent.ns.coll))
-  console.log(JSON.stringify(fullDocument.status))
-  console.log(JSON.stringify(fullDocument.assignedToDriver))
 
   try { 
-      // A driver was assigned and the status updated to IN_PROGRESS
+      // A driver was assigned and the status updated to IN PROGRESS
       if ( operationType === "update" && 
            changeEvent.ns.coll === "orders" && 
-           fullDocument.status === "IN_PROGRESS" &&
+           fullDocument.status === "IN PROGRESS" &&
            fullDocument.assignedToDriver ) {
         
               console.log("Inside if.")
@@ -137,7 +131,7 @@ exports = async function (changeEvent) {
   }
   catch(err){
     console.log("ERROR: ", err)
-    return {"status":"403","message":`Emai sent to ${assignedToDriver} successfully.`}
+    return {"status":"403","message":`Failed to send email to ${assignedToDriver}.`,"data":`${JSON.stringify(err)}`}
   }
   
 };	

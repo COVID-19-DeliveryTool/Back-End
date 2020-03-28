@@ -1,5 +1,5 @@
 {
-    "name": "notifyAssignedDriverTrigger",
+    "name": "notifyDeliveryInProgressTrigger",
     "type": "DATABASE",
     "config": {
         "operation_types": [
@@ -12,6 +12,6 @@
         "full_document": true,
         "unordered": false
     },
-    "function_name": "notifyAssignedDriver",
+    "function_name": "notifyDeliveryInProgress",
     "disabled": false
 }

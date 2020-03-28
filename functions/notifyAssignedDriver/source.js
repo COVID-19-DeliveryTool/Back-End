@@ -113,13 +113,13 @@ exports = async function (changeEvent) {
               console.log("Driver Email: ", assignedToDriver)
               let appBaseUrl = context.values.get("app-base-url");
               let subject = "You've been assigned a new order! - StayNeighbor";
-              let body = `Hey driver, \n\n Some needs your help! You've been assigned a new order.\n\n
+              let body = `Hey driver, \n\n Some needs your help! You've been assigned a new order.<br/>
                             
-                          Items requested: ${items}.\n
-                          Delivery Address: ${address}, ${zipcode}.\n
-                          \n
-                          Thanks for your help! When you've delivered the order, please click the link below to mark it completed:\n\n`
-                          + appBaseUrl + '/order/complete/' + _id;
+                          Items requested: ${JSON.stringify(items)}.<br/>
+                          Delivery Address: ${JSON.stringify(address)}, ${JSON.stringify(zipcode)}.<br/>
+                          <br/>
+                          Thanks for your help! When you've delivered the order, please click the link below to mark it completed:<br>
+                          ${appBaseUrl}/order/complete/${BSON.ObjectId(_id.$oid).toString()} <br/>`;
 
               message_obj = updateMessageObj(message_obj, assignedToDriver, subject, body);
               

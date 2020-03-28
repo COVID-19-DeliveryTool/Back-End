@@ -1,5 +1,5 @@
 {
-    "name": "notifyAssignedDriver",
+    "name": "notifyAssignedDriverTrigger",
     "type": "DATABASE",
     "config": {
         "operation_types": [

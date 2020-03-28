@@ -23,7 +23,7 @@ exports = async function (changeEvent) {
          updateDescription: {
             updatedFields: {
                assignedToDriver: 'dilloharless@gmail.com',
-               status:"IN_PROGRESS",
+               status:"IN PROGRESS",
                assignedToDriver:"2"
             },
             removedFields: null
@@ -54,7 +54,7 @@ exports = async function (changeEvent) {
               "lat": "123",
               "long": "123"
           },
-          "status": "IN_PROGRESS",
+          "status": "IN PROGRESS",
           "assignedToDriver": "dillonharless@gmail.com",
           "assignedToOrg": "",
           "assignedToDriver": "dillonharless@gmail.com",
@@ -100,10 +100,10 @@ exports = async function (changeEvent) {
   }
 
   try { 
-      // A driver was assigned and the status updated to IN_PROGRESS
+      // A driver was assigned and the status updated to IN PROGRESS
       if ( operationType === "update" && 
            changeEvent.ns.coll === "orders" && 
-           fullDocument.status === "IN_PROGRESS" &&
+           fullDocument.status === "IN PROGRESS" &&
            fullDocument.assignedToDriver ) {
         
               console.log("Inside if.")

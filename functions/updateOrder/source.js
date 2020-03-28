@@ -1,4 +1,4 @@
-exports = async function(orderId,uOrder, addressChanged){
+exports = async function(order_id, uOrder, addressChanged){
   
   
     /*
@@ -22,7 +22,7 @@ exports = async function(orderId,uOrder, addressChanged){
       }
       
       // Get the id of the order 
-      let orderId = orderId
+      let orderId = order_id
       console.log("Order Id: ", orderId)
       
       // Create a Date object from the BSON date ||| NOTE: Commented out as I'm deleting since I don't think it makes sense too update this anyway.

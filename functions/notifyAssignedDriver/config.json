@@ -1,5 +1,5 @@
 {
-    "name": "assignOrder",
+    "name": "notifyAssignedDriver",
     "private": false,
     "run_as_system": true
 }

@@ -66,7 +66,7 @@ exports = async function (changeEvent) {
   const ses = context.services.get('AWS_SES').ses("us-east-1");
 
   // Destructure out fields from the change stream event object
-  const { fullDocument, operationType } = changeEvent;
+  const { fullDocument, operationType, updateDescription } = changeEvent;
   
   console.log("fullDocument: ", JSON.stringify(fullDocument))
   
@@ -104,7 +104,8 @@ exports = async function (changeEvent) {
       if ( operationType === "update" && 
            changeEvent.ns.coll === "orders" && 
            fullDocument.status === "IN PROGRESS" &&
-           fullDocument.assignedToDriver ) {
+           fullDocument.assignedToDriver && 
+           updateDescription.updatedFields.assignedToDriver ) {
         
               console.log("Inside if.")
               // TODO: Call a function to create a completion url.

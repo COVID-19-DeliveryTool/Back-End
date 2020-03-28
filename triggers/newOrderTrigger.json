@@ -5,7 +5,7 @@
         "operation_types": [
             "INSERT"
         ],
-        "database": "%%values.db-name",
+        "database": "stayneighbor",
         "collection": "orders",
         "service_name": "mongodb-atlas",
         "match": {},

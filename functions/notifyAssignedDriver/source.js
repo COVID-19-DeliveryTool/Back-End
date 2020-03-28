@@ -109,16 +109,18 @@ exports = async function (changeEvent) {
               console.log("Inside if.")
               // TODO: Call a function to create a completion url.
               // Build requester message
-              let { assignedToDriver, address, zipcode, items } = fullDocument;
+              let { _id, assignedToDriver, address, zipcode, items } = fullDocument;
               console.log("Driver Email: ", assignedToDriver)
+              let appBaseUrl = context.values.get("app-base-url");
               let subject = "You've been assigned a new order! - StayNeighbor";
               let body = `Hey driver, \n\n Some needs your help! You've been assigned a new order.\n\n
                             
                           Items requested: ${items}.\n
                           Delivery Address: ${address}, ${zipcode}.\n
                           \n
-                          Thanks for your help! When you've delivered the order, please click the link below to mark it completed:\n\n
-                          bit.ly.org/completion-url`;
+                          Thanks for your help! When you've delivered the order, please click the link below to mark it completed:\n\n`
+                          + appBaseUrl + '/order/complete/' + _id;
+
               message_obj = updateMessageObj(message_obj, assignedToDriver, subject, body);
               
               console.log("Message Created.")

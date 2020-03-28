@@ -45,9 +45,9 @@ exports = function(orderDetails){
     if (arr.length !== 0 && orderDetails.type == 'REQUEST'){
      return  ({"status": "400", "message": "Order has already been placed from this address within 3 hours."});
     }
-    return val = context.functions.execute("getCoords", orderDetails.address).then(coords => {
-      if (coords.status == 400){
-        return {"status": '400', 'message':"Address <" + orderDetails.address + "> does not exist"}
+    return val = context.functions.execute("getCoords", orderDetails.address, orderDetails.zipcode).then(coords => {
+      if (coords.status != 200 ){
+        return coords
       }
       let geometry = {}
       geometry.lat = coords.lat

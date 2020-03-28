@@ -124,7 +124,7 @@ exports = async function (changeEvent) {
       let body = `Hey driver, \n\n Some needs your help! You've been assigned a new order.<br/>
                             
                           Items requested: ${itemList}. <br/>
-                          Delivery Address: ${JSON.parse(address)}, ${JSON.prase(zipcode)}.<br/>
+                          Delivery Address: ${address}, ${zipcode}.<br/>
                           <br/>
                           Thanks for your help! When you've delivered the order, please click the link below to mark it completed:<br>
                           ${appBaseUrl}/order/complete/${BSON.ObjectId(_id.$oid).toString()} <br/>`;

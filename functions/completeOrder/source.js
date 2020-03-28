@@ -32,12 +32,11 @@ exports = async function (orderId) {
     //TODO: notify dispatcher?
 
     console.log(JSON.stringify(order));
-    orderCollection.replaceOne(
+    return orderCollection.replaceOne(
         findByOrderId,
         order,
         { upsert: false}
     ).then(result => {
-        console.log(JSON.stringify(result));
         return { "status": "200", "message": "Successfully updated " + result.modifiedCount + " item" };
     }).catch(err => {
         return { "status": '400', 'message': "Failed to update item:" + err };

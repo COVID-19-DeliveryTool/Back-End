@@ -12,6 +12,9 @@ exports = async function(order_id, uOrder, addressChanged){
     try {
       // Connect to atlas
       const atlas = context.services.get(context.values.get("cluster-name"));
+      // Instantiate a return message and status
+      let return_messsage = ""
+      let return_status = "200"
     
       let updatedOrder
       // Parse JSON ? Not sure if necessary.
@@ -56,6 +59,10 @@ exports = async function(order_id, uOrder, addressChanged){
       // Check if the address changed
       if ( addressChanged ) {
         let coords = await context.functions.execute("getCoords", updateOrderNoId.address)
+        if ( coords.status !== "200" ) {
+          return_status = 400
+          throw coords.message
+        }
         let { lat, lng } = coords
         let geometry = {
           lat: lat,
@@ -77,10 +84,6 @@ exports = async function(order_id, uOrder, addressChanged){
       
       
       console.log("UPDATED SET OPERATOR: ", JSON.stringify(updateCmd))
-  
-      // Instantiate a return message and status
-      let return_messsage = ""
-      let return_status = "200"
       
       let res = await atlas.db(context.values.get("db-name")).collection('orders').updateOne(query, updateCmd, options) 
       console.log("Update operation condluded with: ", JSON.stringify(res))

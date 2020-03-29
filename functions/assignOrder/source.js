@@ -16,7 +16,10 @@ exports = function(orderId, driverId){
   if (driverId === ''){
   	orderStatus = 'PENDING'
   }
-  let updateCmd = {$set: {assignedToDriver: driverId, assignedToOrg: context.user.custom_data.organizationId + "", status: orderStatus}}
+
+  let driverCompletedId = utils.crypto.hash("md5", driverId + orderId);
+
+  let updateCmd = {$set: {driverCompletionUuid: driverCompletedId, assignedToDriver: driverId, assignedToOrg: context.user.custom_data.organizationId + "", status: orderStatus}}
   return collection.updateOne(query, updateCmd)
   .then(result => {
     //maybe here we want to send an email?

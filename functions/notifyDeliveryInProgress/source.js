@@ -105,6 +105,7 @@ exports = async function (changeEvent) {
         // A driver was assigned and the status updated to IN PROGRESS
         if ( operationType === "update" && 
              changeEvent.ns.coll === "orders" && 
+             updateDescription.updatedFields.status &&
              fullDocument.status === "IN PROGRESS" &&
              fullDocument.assignedToDriver &&
              fullDocument.emailAddress ) {
@@ -127,6 +128,11 @@ exports = async function (changeEvent) {
                 console.log("Sent.")
                 console.log(EJSON.stringify(result));
                 return {"status":"200","message":`Email sent to ${emailAddress} successfully.`,"data":`${JSON.stringify(result)}`}
+        }
+        else {
+          console.log("Didn't meet the requirements to send a delivery in progress notification.")
+          console.log("Email not sent.")
+          console.log("Change Event: ", JSON.stringify(changeEvent))
         }
     }
     catch(err){

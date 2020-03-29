@@ -11,19 +11,21 @@ exports = async function (orderId) {
     let findByOrderId = { "_id": BSON.ObjectId(orderId) };
 
     if (!orderId) {
-        return { "status": '400', "message": "orderId is a required input and cannot be null/empty" };
+        console.log("Null order ID was passed into function.");
+        return { "status": '400', "message": "Something went wrong when trying to complete your order." };
     }
 
     let order = await orderCollection.findOne(findByOrderId);
 
     if (!order || !order._id) {
-        return { "status": "404", "message": "Order not found " };
+        console.log("No order found for id: ", orderId);
+        return { "status": "404", "message": "Something went wrong when trying to complete your order." };
     }
 
     //Order should only be moved to complete if it is currently in progess.
     //TODO: maybe add driver email verification somehow
     if (order.status !== "IN PROGRESS") {
-        return { "status": "409", "message": "Cannot complete, order must be in 'IN PROGRESS' status, currently in: " + order.status };
+        return { "status": "409", "message": "There was an error completing the order. Please contact your dispatcher." };
     }
 
     
@@ -37,8 +39,9 @@ exports = async function (orderId) {
         order,
         { upsert: false}
     ).then(result => {
-        return { "status": "200", "message": "Successfully updated " + result.modifiedCount + " item" };
+        return { "status": "200", "message": "Successfully completed order. Thank you!" };
     }).catch(err => {
-        return { "status": '400', 'message': "Failed to update item:" + err };
+        console.log("Error: ", err)
+        return { "status": '500', 'message': "Something went wrong when trying to complete your order." };
     });
 }

@@ -131,6 +131,8 @@ exports = async function (changeEvent) {
         }
         else {
           console.log("Didn't meet the requirements to send a delivery in progress notification.")
+          console.log("Email not sent.")
+          console.log("Change Event: ", JSON.stringify(changeEvent))
         }
     }
     catch(err){

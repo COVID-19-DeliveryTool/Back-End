@@ -114,7 +114,8 @@ exports = async function (changeEvent) {
         // A driver was assigned and the status updated to IN PROGRESS
         if ( operationType === "update" && 
              changeEvent.ns.coll === "orders" && 
-             fullDocument.status === "COMPLETED" &&
+             updateDescription.updatedFields.status &&
+             updateDescription.updatedFields.status == "COMPLETED" &&
              fullDocument.assignedToDriver &&
              fullDocument.emailAddress ) {
           

@@ -56,16 +56,22 @@ exports = async function(address, zipcode){
   if (responseJson.results.length === 0){
     return {"status": '400', 'message':"Address <" + address + "> does not exist"}
   }
-  let coords = responseJson.results[0].geometry.location;
 
-  let dataArr = JSON.parse(response.body.text()).results[0].address_components
-   for (var i=0; i < dataArr.length; i++) {
-     if (dataArr[i].types == "postal_code"){
-       var expectedZipCode = dataArr[i].long_name
-     }
+  let resultsArr = responseJson.results
+  for(var i = 0; i < resultsArr.length; i ++){
+    let dataArr = resultsArr[i].address_components
+     for (var j=0; j < dataArr.length; j++) {
+       if (dataArr[j].types == "postal_code"){
+         if (dataArr[j].long_name == zipcode){
+          var expectedZipCode = dataArr[j].long_name
+          var coords = responseJson.results[i].geometry.location;
+         }
+       }
+    }
   }
-  if (expectedZipCode != zipcode)
-    return {"status": '409', 'message':"Zipcode entered (" + zipcode + ") does not match the address provided"}
+  if(typeof expectedZipCode === "undefined"){
+    return {"status": '400', 'message':"Address <" + address + "> with zipcode <" + zipcode + "> does not exist"}
+  }
 
   return coords;
 }

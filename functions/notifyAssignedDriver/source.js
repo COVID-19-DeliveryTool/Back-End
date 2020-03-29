@@ -142,6 +142,7 @@ exports = async function (changeEvent) {
     else {
       console.log("The conditions for the if statement were not matched.")
       console.log("Email not sent.")
+      console.log("Change Event: ", JSON.stringify(changeEvent))
     }
   }
   catch (err) {

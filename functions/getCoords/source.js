@@ -58,18 +58,20 @@ exports = async function(address, zipcode){
   }
 
   let resultsArr = responseJson.results
+  let expectedZipCode = null
+  let coords = null
   for(var i = 0; i < resultsArr.length; i ++){
     let dataArr = resultsArr[i].address_components
      for (var j=0; j < dataArr.length; j++) {
        if (dataArr[j].types == "postal_code"){
          if (dataArr[j].long_name == zipcode){
-          var expectedZipCode = dataArr[j].long_name
-          var coords = responseJson.results[i].geometry.location;
+          expectedZipCode = dataArr[j].long_name
+          coords = responseJson.results[i].geometry.location;
          }
        }
     }
   }
-  if(typeof expectedZipCode === "undefined"){
+  if(!expectedZipCode || !coords){
     return {"status": '400', 'message':"Address <" + address + "> with zipcode <" + zipcode + "> does not exist"}
   }
 

@@ -110,7 +110,7 @@ exports = async function (changeEvent) {
         console.log("Inside if.")
         // TODO: Call a function to create a completion url.
         // Build requester message
-        let { _id, assignedToDriver, address, zipcode, items } = fullDocument;
+        let { assignedToDriver, address, zipcode, items, driverOrderHash } = fullDocument;
         console.log("Driver Email: ", assignedToDriver)
         let appBaseUrl = context.values.get("app-base-url");
 
@@ -128,7 +128,7 @@ exports = async function (changeEvent) {
                           Delivery Address: ${address}, ${zipcode}.<br/>
                           <br/>
                           Thanks for your help! When you've delivered the order, please click the link below to mark it completed:<br>
-                          ${appBaseUrl}/order/complete/${_id} <br/>`;
+                          ${appBaseUrl}/order?orderId=${_id}&$did=${driverOrderHash} <br/>`;
 
       message_obj = updateMessageObj(message_obj, assignedToDriver, subject, body);
 

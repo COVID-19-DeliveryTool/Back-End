@@ -4,18 +4,18 @@ exports(orderId);
 */
 
 //TODO: add comments
-exports = async function (orderId) {
+exports = async function (orderId, driverOrderHash) {
 
     let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
     let orderCollection = db.collection("orders");
-    let findByOrderId = { "_id": BSON.ObjectId(orderId) };
+    let findByOrderIdAndHash = { "_id": BSON.ObjectId(orderId), "driverOrderHash": driverOrderHash };
 
     if (!orderId) {
         console.log("Null order ID was passed into function.");
         return { "status": '400', "message": "Something went wrong when trying to complete your order." };
     }
 
-    let order = await orderCollection.findOne(findByOrderId);
+    let order = await orderCollection.findOne(findByOrderIdAndHash);
 
     if (!order || !order._id) {
         console.log("No order found for id: ", orderId);
@@ -35,7 +35,7 @@ exports = async function (orderId) {
 
     console.log(JSON.stringify(order));
     return orderCollection.replaceOne(
-        findByOrderId,
+        findByOrderIdAndHash,
         order,
         { upsert: false}
     ).then(result => {

@@ -75,7 +75,7 @@ exports = async function (changeEvent) {
     const ses = context.services.get('AWS_SES').ses("us-east-1");
   
     // Destructure out fields from the change stream event object
-    const { fullDocument, operationType } = changeEvent;
+    const { fullDocument, operationType, updateDescription } = changeEvent;
     
     // NOTE: Do we want to log this for any reason?
     // console.log("fullDocument: ", JSON.stringify(fullDocument))
@@ -114,7 +114,8 @@ exports = async function (changeEvent) {
         // A driver was assigned and the status updated to IN PROGRESS
         if ( operationType === "update" && 
              changeEvent.ns.coll === "orders" && 
-             fullDocument.status === "COMPLETED" &&
+             updateDescription.updatedFields.status &&
+             updateDescription.updatedFields.status === "COMPLETED" &&
              fullDocument.assignedToDriver &&
              fullDocument.emailAddress ) {
           

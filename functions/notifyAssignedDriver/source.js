@@ -110,7 +110,7 @@ exports = async function (changeEvent) {
         console.log("Inside if.")
         // TODO: Call a function to create a completion url.
         // Build requester message
-        let { assignedToDriver, address, zipcode, items, driverOrderHash } = fullDocument;
+        let { _id, assignedToDriver, address, zipcode, items, driverOrderHash } = fullDocument;
         console.log("Driver Email: ", assignedToDriver)
         let appBaseUrl = context.values.get("app-base-url");
 

@@ -19,7 +19,7 @@ exports = function(orderId, driverId){
 
   //Get a unique identifier to be used in the completion URL.
   //DriverId is actually the driver Email
-  let driverCompletedId = utils.crypto.hash("md5", driverId + orderId);
+  let driverCompletedId = utils.crypto.hash("md5", driverId + orderId).toHex();
 
   let updateCmd = {$set: {driverOrderHash: driverCompletedId, assignedToDriver: driverId, assignedToOrg: context.user.custom_data.organizationId + "", status: orderStatus}}
   return collection.updateOne(query, updateCmd)

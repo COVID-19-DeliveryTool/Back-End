@@ -46,7 +46,7 @@ exports = function(orderDetails){
      return  ({"status": "400", "message": "Order has already been placed from this address within 3 hours."});
     }
     return val = context.functions.execute("getCoords", orderDetails.address, orderDetails.zipcode).then(coords => {
-      if (coords.status != 200 ){
+      if (coords.status && coords.status != 200 ){
         return coords
       }
       let geometry = {}

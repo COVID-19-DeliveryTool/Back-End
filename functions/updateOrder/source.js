@@ -9,12 +9,12 @@ exports = async function(order_id, uOrder, addressChanged){
       Make sure the object has a valid address if you set addressChanged to true.
       NOTE: I've been getting an error inside getCoords.
     */
+   let return_status = ""
     try {
       // Connect to atlas
       const atlas = context.services.get(context.values.get("cluster-name"));
       // Instantiate a return message and status
       let return_messsage = ""
-      let return_status = "200"
     
       let updatedOrder
       // Parse JSON ? Not sure if necessary.
@@ -82,7 +82,6 @@ exports = async function(order_id, uOrder, addressChanged){
         updateCmd.$set[`${property}`] = updateOrderNoId[property]
       }
       
-      
       console.log("UPDATED SET OPERATOR: ", JSON.stringify(updateCmd))
       
       let res = await atlas.db(context.values.get("db-name")).collection('orders').updateOne(query, updateCmd, options) 
@@ -97,11 +96,12 @@ exports = async function(order_id, uOrder, addressChanged){
         return_status = "403"
         throw "Found the order, but was not able to modify. Reason unknown."
       } 
-      // Other return successful
+      // Other set status to 200 and return successful
+      return_status = "200"
       console.log("Operation Successful: ", JSON.stringify(res))
       return JSON.stringify({"status":return_status,"message":"Operation successful."})
     } catch( err ) {
-          if (!return_status) let return_status = "403"
+          if (!return_status) return_status = "403"
           console.log("There was an error: " + err)
           return JSON.stringify({"status":return_status,"message":err})
       } 

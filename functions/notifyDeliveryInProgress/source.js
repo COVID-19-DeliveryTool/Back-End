@@ -2,13 +2,13 @@ exports = async function (changeEvent) {
 
     /*
         Accepts: changeEvent
-  
+
         Invoked by a trigger that watches for the "emailAddres" field to change
-        
+
         Sends an email to the email address stored in emailAddres on the updated document.
-        
+
         Change Event to pass in while testing: -- make sure it exists with the right id in the db.
-        
+
         {
           // _id: {ObjectId("0214eb4a30c75625e00d2820")},
            operationType: 'update',
@@ -62,20 +62,20 @@ exports = async function (changeEvent) {
           }
         }
     */
-  
+
     const ses = context.services.get('AWS_SES').ses("us-east-1");
-  
+
     // Destructure out fields from the change stream event object
     const { fullDocument, operationType } = changeEvent;
-    
+
     // NOTE: Do we want to log this for any reason?
     // console.log("fullDocument: ", JSON.stringify(fullDocument))
-    
-    
+
+
     // Instantiate message
     let message_obj = {
           Source: "covid.19.deliverytool@gmail.com",
-          Destination: { ToAddresses: [" "] }, 
+          Destination: { ToAddresses: [" "] },
           Message: {
               Body: {
                   Html: {
@@ -89,7 +89,7 @@ exports = async function (changeEvent) {
               }
           }
       }
-    
+
     // Updates the message object appropriately
     function updateMessageObj(message_obj, email, subject, body) {
       console.log("message_object: ", JSON.stringify(message_obj))
@@ -100,28 +100,36 @@ exports = async function (changeEvent) {
       mo.Message.Body.Html.Data = body;
       return mo;
     }
-  
-    try { 
+
+    try {
         // A driver was assigned and the status updated to IN PROGRESS
-        if ( operationType === "update" && 
-             changeEvent.ns.coll === "orders" && 
+        if ( operationType === "update" &&
+             changeEvent.ns.coll === "orders" &&
              updateDescription.updatedFields.status &&
              fullDocument.status === "IN PROGRESS" &&
              fullDocument.assignedToDriver &&
              fullDocument.emailAddress ) {
-          
+
                 // TODO: Call a function to create a completion url.
                 // Build requester message
-                let { emailAddress, address, zipcode, items, firstName, lastName } = fullDocument;
+                let { emailAddress, address, zipcode, items, firstName, lastName, assignedToOrg } = fullDocument;
+                let query = {_id: BSON.ObjectId(String(assignedToOrg))}
+                let orgName;
+                let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
+                let collection = db.collection("organizations")
+                collection.findOne(query)
+                 .then(org => {
+                    orgName = org.name
+                 })
                 let subject = "Your request is on the way! - StayNeighbor";
-                let body = `Hey ${JSON.stringify(firstName)}, \n\n your order is currently being delivered by one of our drivers!\n\n
-                              
+                let body = `Hey ${JSON.stringify(firstName)}, \n\n your order is currently being delivered by ${JSON.stringify(orgName)}!\n\n
+
                             Items requested: ${items}.\n
                             Delivery Address: ${address}, ${zipcode}.\n
                             \n
                             Thanks for using StayNeighbor. Please tell everyone you know about us!`;
                 message_obj = updateMessageObj(message_obj, emailAddress, subject, body);
-                
+
                 console.log("Message Created.")
                 // Send message
                 let result = await ses.SendEmail(message_obj);
@@ -139,4 +147,4 @@ exports = async function (changeEvent) {
       console.log("ERROR: ", err)
       return {"status":"403","message":`Failed to send email. ${JSON.stringify(err)}`}
     }
-  };	
+  };

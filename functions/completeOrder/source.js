@@ -25,7 +25,7 @@ exports = async function (orderId) {
     //Order should only be moved to complete if it is currently in progess.
     //TODO: maybe add driver email verification somehow
     if (order.status !== "IN PROGRESS") {
-        return { "status": "409", "message": "This order is not marked as in progress, please verify the dispatcher has not unassigned it." };
+        return { "status": "409", "message": "There was an error completing the order. Please contact your dispatcher." };
     }
 
     

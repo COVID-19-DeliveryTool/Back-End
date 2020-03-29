@@ -101,6 +101,7 @@ exports = async function(order_id, uOrder, addressChanged){
       console.log("Operation Successful: ", JSON.stringify(res))
       return JSON.stringify({"status":return_status,"message":"Operation successful."})
     } catch( err ) {
+          if (!return_status) let return_status = "403"
           console.log("There was an error: " + err)
           return JSON.stringify({"status":return_status,"message":err})
       } 

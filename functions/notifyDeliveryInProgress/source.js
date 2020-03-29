@@ -113,7 +113,7 @@ exports = async function (changeEvent) {
                 // TODO: Call a function to create a completion url.
                 // Build requester message
                 let { emailAddress, address, zipcode, items, firstName, lastName, assignedToOrg } = fullDocument;
-                let query = {assignedToOrg: String(assignedToOrg)}
+                let query = {_id: BSON.ObjectId(String(assignedToOrg))}
                 let orgName;
                 let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
                 let collection = db.collection("organizations")

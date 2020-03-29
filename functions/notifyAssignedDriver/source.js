@@ -114,7 +114,7 @@ exports = async function (changeEvent) {
         console.log("Driver Email: ", assignedToDriver)
         let appBaseUrl = context.values.get("app-base-url");
 
-        console.log(JSON.stringify(items));
+        console.log("Item List: ", JSON.stringify(items));
         let itemList = "<ul>";
         items.forEach(element => {
           itemList += `<li>${element.name} ${element.quantity}</li>`;
@@ -128,7 +128,7 @@ exports = async function (changeEvent) {
                           Delivery Address: ${address}, ${zipcode}.<br/>
                           <br/>
                           Thanks for your help! When you've delivered the order, please click the link below to mark it completed:<br>
-                          ${appBaseUrl}/order/complete/${BSON.ObjectId(_id.$oid).toString()} <br/>`;
+                          ${appBaseUrl}/order/complete/${_id} <br/>`;
 
       message_obj = updateMessageObj(message_obj, assignedToDriver, subject, body);
 
@@ -138,6 +138,11 @@ exports = async function (changeEvent) {
       console.log("Sent.")
       console.log(EJSON.stringify(result));
       return { "status": "200", "message": `Email sent to ${assignedToDriver} successfully.`, "data": `${JSON.stringify(result)}` }
+    } 
+    else {
+      console.log("The conditions for the if statement were not matched.")
+      console.log("Email not sent.")
+      console.log("Change Event: ", JSON.stringify(changeEvent))
     }
   }
   catch (err) {

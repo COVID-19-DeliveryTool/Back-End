@@ -35,15 +35,13 @@ results[]: {
 }
 */
 
-exports = async function(address){
+exports = async function(address, zipcode){
 
   let mapsApiKey = context.values.get("stayneighor-google-maps-api-key");
   //This function assumes that the Google API has already been hooked up.
   let response = await context.http.get({
     url : 'https://maps.googleapis.com/maps/api/geocode/json?address="'+encodeURI(address)+'"&key='+mapsApiKey
   });
-  console.log(JSON.stringify(response.status));
-
   let responseJson;
 
   if(response.status.indexOf('200') > -1){
@@ -58,7 +56,24 @@ exports = async function(address){
   if (responseJson.results.length === 0){
     return {"status": '400', 'message':"Address <" + address + "> does not exist"}
   }
-  let coords = responseJson.results[0].geometry.location;
+
+  let resultsArr = responseJson.results
+  let expectedZipCode = null
+  let coords = null
+  for(var i = 0; i < resultsArr.length; i ++){
+    let dataArr = resultsArr[i].address_components
+     for (var j=0; j < dataArr.length; j++) {
+       if (dataArr[j].types == "postal_code"){
+         if (dataArr[j].long_name == zipcode){
+          expectedZipCode = dataArr[j].long_name
+          coords = responseJson.results[i].geometry.location;
+         }
+       }
+    }
+  }
+  if(!expectedZipCode || !coords){
+    return {"status": '400', 'message':"Address <" + address + "> with zipcode <" + zipcode + "> does not exist"}
+  }
 
   return coords;
 }

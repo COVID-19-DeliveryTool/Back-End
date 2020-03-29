@@ -39,15 +39,15 @@ exports = function(orderDetails){
 
   let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
   let collection = db.collection("orders")
-  let query = {dateCreated:{$gt:new Date(Date.now() - 3*60*60 * 1000)}, address: orderDetails.address}
+  let query = {dateCreated:{$gt:new Date(Date.now() - 3*60*60 * 1000)}, address: orderDetails.address, type: "REQUEST"}
   return collection.find(query).toArray()
   .then(arr => {
     if (arr.length !== 0 && orderDetails.type == 'REQUEST'){
      return  ({"status": "400", "message": "Order has already been placed from this address within 3 hours."});
     }
-    return val = context.functions.execute("getCoords", orderDetails.address).then(coords => {
-      if (coords.status == 400){
-        return {"status": '400', 'message':"Address <" + orderDetails.address + "> does not exist"}
+    return val = context.functions.execute("getCoords", orderDetails.address, orderDetails.zipcode).then(coords => {
+      if (coords.status && coords.status != 200 ){
+        return coords
       }
       let geometry = {}
       geometry.lat = coords.lat
@@ -57,8 +57,7 @@ exports = function(orderDetails){
       orderDetails.status = "PENDING"
       orderDetails.assignedToDriver = ""
       orderDetails.assignedToOrg = ""
-      orderDetails.driverEmail= ""
-     return collection.insertOne(orderDetails)
+      return collection.insertOne(orderDetails)
        .then(result => {
          return {"status": '200', 'message':"Successfully inserted item with _id:" + result.insertedId};
         }).catch(err => {

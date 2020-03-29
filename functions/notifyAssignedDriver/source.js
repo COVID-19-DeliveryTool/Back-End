@@ -128,7 +128,7 @@ exports = async function (changeEvent) {
                           Delivery Address: ${address}, ${zipcode}.<br/>
                           <br/>
                           Thanks for your help! When you've delivered the order, please click the link below to mark it completed:<br>
-                          ${appBaseUrl}/order?orderId=${_id}&$did=${driverOrderHash} <br/>`;
+                          ${appBaseUrl}/order?orderId=${_id}&did=${driverOrderHash} <br/>`;
 
       message_obj = updateMessageObj(message_obj, assignedToDriver, subject, body);
 

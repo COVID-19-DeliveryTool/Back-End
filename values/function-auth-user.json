@@ -1,0 +1,5 @@
+{
+    "name": "function-auth-user",
+    "value": "stayneighbor-external-user",
+    "from_secret": false
+}

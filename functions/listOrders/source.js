@@ -16,8 +16,13 @@ exports = function(){
     if ( context.user.custom_data.zipcodes &&
          context.user.custom_data.zipcodes instanceof Array &&
          context.user.custom_data.zipcodes.length > 0          ) {
-
         zips = context.user.custom_data.zipcodes
+    }
+
+    let assignedOrg = null;
+    if ( context.user.custom_data &&
+        context.user.custom_data.organizationId ) {
+      assignedOrg = context.user.custom_data.organizationId;
     }
 
     // Throw an error if a dipatcher's zipcodes are empty
@@ -25,12 +30,14 @@ exports = function(){
 
     console.log("Zips: ", zips)
 
-    // Set up query to only return orders in the zips array.
-    const query = { zipcode: { $in: zips }  };
+    // Set up query to only return orders in the zips array,
+    // as well as finding "unassigned" orders with no org,
+    // or orders that are assigned to the users current org.
+    const query = { zipcode: { $in: zips }, $or: [{assignedToOrg: {$in: [null, "", "undefined"]}}, {assignedToOrg: assignedOrg}]  };
 
     // Query and returns orders in array.
     return atlas.db(context.values.get("db-name")).collection('orders').find(query)
-      .sort({ zipcode: 1 })
+      .sort({ dateCreated: 1 })
       .toArray()
       .then(items => {
         console.log(`Successfully found ${items.length} documents.`)

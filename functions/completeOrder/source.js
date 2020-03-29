@@ -4,26 +4,28 @@ exports(orderId);
 */
 
 //TODO: add comments
-exports = async function (orderId) {
+exports = async function (orderId, driverOrderHash) {
 
     let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
     let orderCollection = db.collection("orders");
-    let findByOrderId = { "_id": BSON.ObjectId(orderId) };
+    let findByOrderIdAndHash = { "_id": BSON.ObjectId(orderId), "driverOrderHash": driverOrderHash };
 
-    if (!orderId) {
-        return { "status": '400', "message": "orderId is a required input and cannot be null/empty" };
+    if (!orderId || !driverOrderHash) {
+        console.log("Null order ID was passed into function.");
+        return { "status": '400', "message": "Something went wrong when trying to complete your order." };
     }
 
-    let order = await orderCollection.findOne(findByOrderId);
+    let order = await orderCollection.findOne(findByOrderIdAndHash);
 
     if (!order || !order._id) {
-        return { "status": "404", "message": "Order not found " };
+        console.log("No order found for id: ", orderId, " and hash: ", driverOrderHash);
+        return { "status": "404", "message": "Something went wrong when trying to complete your order." };
     }
 
     //Order should only be moved to complete if it is currently in progess.
     //TODO: maybe add driver email verification somehow
     if (order.status !== "IN PROGRESS") {
-        return { "status": "409", "message": "Cannot complete, order must be in 'IN PROGRESS' status, currently in: " + order.status };
+        return { "status": "409", "message": "There was an error completing the order. Please contact your dispatcher." };
     }
 
     
@@ -33,12 +35,13 @@ exports = async function (orderId) {
 
     console.log(JSON.stringify(order));
     return orderCollection.replaceOne(
-        findByOrderId,
+        findByOrderIdAndHash,
         order,
         { upsert: false}
     ).then(result => {
-        return { "status": "200", "message": "Successfully updated " + result.modifiedCount + " item" };
+        return { "status": "200", "message": "Successfully completed order. Thank you!" };
     }).catch(err => {
-        return { "status": '400', 'message': "Failed to update item:" + err };
+        console.log("Error: ", err)
+        return { "status": '500', 'message': "Something went wrong when trying to complete your order." };
     });
 }

@@ -9,9 +9,12 @@ exports = async function(order_id, uOrder, addressChanged){
       Make sure the object has a valid address if you set addressChanged to true.
       NOTE: I've been getting an error inside getCoords.
     */
+   let return_status = ""
     try {
       // Connect to atlas
       const atlas = context.services.get(context.values.get("cluster-name"));
+      // Instantiate a return message and status
+      let return_messsage = ""
     
       let updatedOrder
       // Parse JSON ? Not sure if necessary.
@@ -56,6 +59,10 @@ exports = async function(order_id, uOrder, addressChanged){
       // Check if the address changed
       if ( addressChanged ) {
         let coords = await context.functions.execute("getCoords", updateOrderNoId.address)
+        if ( coords.status !== "200" ) {
+          return_status = 400
+          throw coords.message
+        }
         let { lat, lng } = coords
         let geometry = {
           lat: lat,
@@ -75,12 +82,7 @@ exports = async function(order_id, uOrder, addressChanged){
         updateCmd.$set[`${property}`] = updateOrderNoId[property]
       }
       
-      
       console.log("UPDATED SET OPERATOR: ", JSON.stringify(updateCmd))
-  
-      // Instantiate a return message and status
-      let return_messsage = ""
-      let return_status = "200"
       
       let res = await atlas.db(context.values.get("db-name")).collection('orders').updateOne(query, updateCmd, options) 
       console.log("Update operation condluded with: ", JSON.stringify(res))
@@ -94,10 +96,12 @@ exports = async function(order_id, uOrder, addressChanged){
         return_status = "403"
         throw "Found the order, but was not able to modify. Reason unknown."
       } 
-      // Other return successful
+      // Other set status to 200 and return successful
+      return_status = "200"
       console.log("Operation Successful: ", JSON.stringify(res))
       return JSON.stringify({"status":return_status,"message":"Operation successful."})
     } catch( err ) {
+          if (!return_status) return_status = "403"
           console.log("There was an error: " + err)
           return JSON.stringify({"status":return_status,"message":err})
       } 

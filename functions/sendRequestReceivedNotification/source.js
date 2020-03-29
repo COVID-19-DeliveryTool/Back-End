@@ -58,6 +58,10 @@ exports = async function (changeEvent) {
           console.log(EJSON.stringify(result));
           return result
         }
+        else {
+          console.log("The conditions for the if statement were not matched.")
+          console.log("Email not sent.")
+        }
     }
     catch(err){
       console.log("ERROR: ", err)

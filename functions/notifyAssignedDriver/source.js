@@ -138,6 +138,11 @@ exports = async function (changeEvent) {
       console.log("Sent.")
       console.log(EJSON.stringify(result));
       return { "status": "200", "message": `Email sent to ${assignedToDriver} successfully.`, "data": `${JSON.stringify(result)}` }
+    } 
+    else {
+      console.log("The conditions for the if statement were not matched.")
+      console.log("Email not sent.")
+      console.log("Change Event: ", JSON.stringify(changeEvent))
     }
   }
   catch (err) {

@@ -10,7 +10,7 @@ exports = async function (orderId, driverOrderHash) {
     let orderCollection = db.collection("orders");
     let findByOrderIdAndHash = { "_id": BSON.ObjectId(orderId), "driverOrderHash": driverOrderHash };
 
-    if (!orderId) {
+    if (!orderId || !driverOrderHash) {
         console.log("Null order ID was passed into function.");
         return { "status": '400', "message": "Something went wrong when trying to complete your order." };
     }
@@ -18,7 +18,7 @@ exports = async function (orderId, driverOrderHash) {
     let order = await orderCollection.findOne(findByOrderIdAndHash);
 
     if (!order || !order._id) {
-        console.log("No order found for id: ", orderId);
+        console.log("No order found for id: ", orderId, " and hash: ", driverOrderHash);
         return { "status": "404", "message": "Something went wrong when trying to complete your order." };
     }
 

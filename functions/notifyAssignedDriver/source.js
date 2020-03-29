@@ -66,8 +66,8 @@ exports = async function (changeEvent) {
   const ses = context.services.get('AWS_SES').ses("us-east-1");
 
   // Destructure out fields from the change stream event object
-  const { fullDocument, operationType } = changeEvent;
-
+  const { fullDocument, operationType, updateDescription } = changeEvent;
+  
   console.log("fullDocument: ", JSON.stringify(fullDocument))
 
   // Instantiate message
@@ -99,29 +99,30 @@ exports = async function (changeEvent) {
     return mo;
   }
 
-  try {
-    // A driver was assigned and the status updated to IN PROGRESS
-    if (operationType === "update" &&
-      changeEvent.ns.coll === "orders" &&
-      fullDocument.status === "IN PROGRESS" &&
-      fullDocument.assignedToDriver) {
+  try { 
+      // A driver was assigned and the status updated to IN PROGRESS
+      if ( operationType === "update" && 
+           changeEvent.ns.coll === "orders" && 
+           fullDocument.status === "IN PROGRESS" &&
+           fullDocument.assignedToDriver && 
+           updateDescription.updatedFields.assignedToDriver ) {
 
-      console.log("Inside if.")
-      // TODO: Call a function to create a completion url.
-      // Build requester message
-      let { _id, assignedToDriver, address, zipcode, items } = fullDocument;
-      console.log("Driver Email: ", assignedToDriver)
-      let appBaseUrl = context.values.get("app-base-url");
+        console.log("Inside if.")
+        // TODO: Call a function to create a completion url.
+        // Build requester message
+        let { _id, assignedToDriver, address, zipcode, items } = fullDocument;
+        console.log("Driver Email: ", assignedToDriver)
+        let appBaseUrl = context.values.get("app-base-url");
 
-      console.log("Item List: ", JSON.stringify(items));
-      let itemList = "<ul>";
-      items.forEach(element => {
-        itemList += `<li>${element.name} ${element.quantity}</li>`;
-      });
-      itemList += "</ul>";
+        console.log("Item List: ", JSON.stringify(items));
+        let itemList = "<ul>";
+        items.forEach(element => {
+          itemList += `<li>${element.name} ${element.quantity}</li>`;
+        });
+        itemList += "</ul>";
 
-      let subject = "You've been assigned a new order! - StayNeighbor";
-      let body = `Hey driver, \n\n Some needs your help! You've been assigned a new order.<br/>
+        let subject = "You've been assigned a new order! - StayNeighbor";
+        let body = `Hey driver, \n\n Some needs your help! You've been assigned a new order.<br/>
                             
                           Items requested: ${itemList}. <br/>
                           Delivery Address: ${address}, ${zipcode}.<br/>

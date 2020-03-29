@@ -115,7 +115,7 @@ exports = async function (changeEvent) {
         if ( operationType === "update" && 
              changeEvent.ns.coll === "orders" && 
              updateDescription.updatedFields.status &&
-             updateDescription.updatedFields.status == "COMPLETED" &&
+             updateDescription.updatedFields.status === "COMPLETED" &&
              fullDocument.assignedToDriver &&
              fullDocument.emailAddress ) {
           

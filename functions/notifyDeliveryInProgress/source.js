@@ -62,7 +62,6 @@ exports = async function (changeEvent) {
           }
         }
     */
-
     const ses = context.services.get('AWS_SES').ses("us-east-1");
 
     // Destructure out fields from the change stream event object
@@ -113,20 +112,16 @@ exports = async function (changeEvent) {
                 // TODO: Call a function to create a completion url.
                 // Build requester message
                 let { emailAddress, address, zipcode, items, firstName, lastName, assignedToOrg } = fullDocument;
-                let query = {_id: BSON.ObjectId(String(assignedToOrg))}
+                let query = {_id: BSON.ObjectId(assignedToOrg)}
                 let orgName;
                 let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
                 let collection = db.collection("organizations")
-                collection.findOne(query)
-                 .then(org => {
-                    orgName = org.name
-                 })
+                let org = await collection.findOne(query);
+                orgName = org.name
+                if (!org.name) orgName = "a Stayneighbor partner"
                 let subject = "Your request is on the way! - StayNeighbor";
-                let body = `Hey ${JSON.stringify(firstName)}, \n\n your order is currently being delivered by ${JSON.stringify(orgName)}!\n\n
-
-                            Items requested: ${items}.\n
-                            Delivery Address: ${address}, ${zipcode}.\n
-                            \n
+                let body = `Hey ${firstName}, <br><br> Your order is currently being delivered by ${orgName}!<br><br>
+                            Delivery Address: ${address}, ${zipcode}.<br><br>
                             Thanks for using StayNeighbor. Please tell everyone you know about us!`;
                 message_obj = updateMessageObj(message_obj, emailAddress, subject, body);
 

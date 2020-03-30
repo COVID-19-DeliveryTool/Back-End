@@ -63,14 +63,7 @@ exports = async function (changeEvent) {
         }
     */
 
-    function toTitleCase(str) {
-        return str.replace(
-            /\w\S*/g,
-            function(txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            }
-        );
-    }
+
 
     const ses = context.services.get('AWS_SES').ses("us-east-1");
 
@@ -122,12 +115,6 @@ exports = async function (changeEvent) {
                 // TODO: Call a function to create a completion url.
                 // Build requester message
                 let { emailAddress, address, zipcode, items, firstName, lastName, assignedToOrg } = fullDocument;
-
-                let itemList = "<ul>";
-                items.forEach(element => {
-                    itemList += `<li>${toTitleCase(element.name)}</li>`;
-                });
-                itemList += "</ul>";
                 let query = {_id: BSON.ObjectId(assignedToOrg)}
                 let orgName;
                 let db = context.services.get(context.values.get("cluster-name")).db(context.values.get("db-name"));
@@ -137,9 +124,6 @@ exports = async function (changeEvent) {
                 if (!org.name) orgName = "a Stayneighbor partner"
                 let subject = "Your request has been fulfilled! - StayNeighbor";
                 let body = `Hey ${firstName},<br><br> Your order has been delivered by ${orgName}!<br><br>
-
-                            Items requested:<br>
-                            ${itemList}<br>
                             Delivery Address: ${address}, ${zipcode}.<br><br>
 
                             Please don't hesitate to use us again.<br><br>
